@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const { findUser, createUser } = require("../services/user.services");
 
 const generateToken = require("../utils/generate.token");
 
@@ -6,7 +6,7 @@ module.exports = {
   async login(req, res) {
     const { fullname, email, avatar } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await findUser({ email });
 
     if (user) {
       const token = generateToken(user);
@@ -16,8 +16,8 @@ module.exports = {
       });
     } else {
       try {
-        const newUser = new User({ fullname, email, avatar });
-        await newUser.save();
+        const newUser = await createUser({ fullname, email, avatar });
+
         const accessToken = generateToken({
           _id: newUser._id,
           email: newUser.email,
