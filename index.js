@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.use("/account", validateData, createUser, login);
+app.use("/account", require("./routes/index"));
 
 // Start the server
 app.listen(process.env.port || 5000, () => {
